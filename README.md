@@ -1,6 +1,12 @@
 ctxmap
 =======
 
+[![Build Status](https://travis-ci.org/ancientlore/ctxmap.svg?branch=master)](https://travis-ci.org/ancientlore/ctxmap)
+[![Coverage Status](https://coveralls.io/repos/ancientlore/ctxmap/badge.svg)](https://coveralls.io/r/ancientlore/ctxmap)
+[![GoDoc](https://godoc.org/github.com/ancientlore/ctxmap?status.png)](https://godoc.org/github.com/ancientlore/ctxmap)
+[![status](https://sourcegraph.com/api/repos/github.com/ancientlore/ctxmap/.badges/status.png)](https://sourcegraph.com/github.com/ancientlore/ctxmap)
+[gocover](http://gocover.io/github.com/ancientlore/ctxmap)
+
 Package ctxmap implements a registry for global context.Context for use in web applications.
 
 Based on work from github.com/gorilla/context, this package simplifies the storage by mapping
