@@ -14,6 +14,8 @@ Based on work from: https://github.com/gorilla/context
 	license that can be found in the LICENSE file.
 */
 
+type sessionKey string
+
 func TestContext(t *testing.T) {
 	assertEqual := func(val interface{}, exp interface{}) {
 		if val != exp {
@@ -32,7 +34,7 @@ func TestContext(t *testing.T) {
 	Set(r, ctx)
 	assertEqual(Get(r), ctx)
 
-	ctx2 := context.WithValue(ctx, "session", make(map[string]interface{}))
+	ctx2 := context.WithValue(ctx, sessionKey("session"), make(map[string]interface{}))
 	Set(r, ctx2)
 	assertEqual(Get(r), ctx2)
 
@@ -71,7 +73,7 @@ func parallelReader(r *http.Request, iterations int, wait, done chan struct{}) {
 
 }
 
-func parallelWriter(r *http.Request, value context.Context, iterations int, wait, done chan struct{}) {
+func parallelWriter(value context.Context, r *http.Request, iterations int, wait, done chan struct{}) {
 	<-wait
 	for i := 0; i < iterations; i++ {
 		Set(r, value)
@@ -99,8 +101,8 @@ func benchmarkMutex(b *testing.B, numReaders, numWriters, iterations int) {
 
 		for i := 0; i < numWriters; i++ {
 			// to be fair in our tests and comparing against gorilla/context, let's set  value
-			ctx := context.WithValue(context.Background(), "Foo", "1234")
-			go parallelWriter(reqs[i], ctx, iterations, wait, done)
+			ctx := context.WithValue(context.Background(), sessionKey("Foo"), "1234")
+			go parallelWriter(ctx, reqs[i], iterations, wait, done)
 		}
 
 		close(wait)
